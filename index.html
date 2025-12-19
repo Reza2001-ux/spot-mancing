@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Peta Spot Mancing Palembang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(#0f2027, #203a43, #2c5364);
+  color: white;
+  text-align: center;
+}
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+button {
+  margin-top: 20px;
+  padding: 15px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #00c853;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #00e676;
+}
+.footer {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 30px;
+}
+</style>
+</head>
+
+<body>
+<div class="hero">
+  <h1>🎣 Peta Spot Mancing Palembang</h1>
+  <p>
+    Temukan spot mancing potensial berdasarkan data lapangan.<br>
+    Cocok untuk pemancing sungai & rawa.
+  </p>
+
+  <button onclick="location.href='peta.html'">
+    🚀 Buka Peta
+  </button>
+
+  <div class="footer">
+    © 2025 • Redavala Fishing Map
+  </div>
+</div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Peta Spot Mancing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+  body, html { margin:0; padding:0; }
+  #map { height:100vh; width:100vw; }
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+var map = L.map('map').setView([-2.99, 104.76], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+fetch('spot_mancing.geojson')
+.then(res => res.json())
+.then(data => {
+  var layer = L.geoJSON(data, {
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(
+        "<b>Spot:</b> " + feature.properties.nama_spot
+      );
+    }
+  }).addTo(map);
+
+  map.fitBounds(layer.getBounds());
+});
+</script>
+</body>
+</html>
